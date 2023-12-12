@@ -1,11 +1,10 @@
 import ipaddress
 from scapy.all import *
 from scapy.all import IP,TCP,UDP, ICMP
-import json
 import os
 
 
-def check_pcap(**kwargs):
+def check_pcap(ip_network, ip_network1,**kwargs):
     action_alert = 'remote'
     info = ''
     condition = False
@@ -15,10 +14,11 @@ def check_pcap(**kwargs):
             MIN_PACKET_LENGTH = 100
             MAX_PACKET_LENGTH = 1600
 
-            NETWORK_TO_CHECK2 = ipaddress.IPv4Network('10.0.0.0/8')
-            NETWORK_TO_CHECK1 = ipaddress.IPv4Network('168.0.0.0/8')
+
+            NETWORK_TO_CHECK1 = ipaddress.IPv4Network(ip_network)
+            NETWORK_TO_CHECK2 = ipaddress.IPv4Network(ip_network1)
             NETWORK_TO_CHECK = [NETWORK_TO_CHECK1, NETWORK_TO_CHECK2]
-            i=0
+            
 
             for packet in packets:
                 # Sprawdzenie flag SYN i FIN
@@ -61,14 +61,18 @@ def check_pcap(**kwargs):
 
 
 
-MAX_FILE_SIZE_JSON = 100
-MAX_FILE_SIZE_XML = 2000000
-MAX_FILE_SIZE_TXT = 500000
-MAX_FILE_SIZE_EVTX = 2500000
 
 
 
-def check_file_size(**kwargs):
+
+def check_file_size(max_files_list,**kwargs):
+    
+
+    MAX_FILE_SIZE_JSON = max_files_list[0]
+    MAX_FILE_SIZE_XML = max_files_list[1]
+    MAX_FILE_SIZE_TXT = max_files_list[2]
+    MAX_FILE_SIZE_EVTX = max_files_list[3]
+
     action_alert = 'remote'
     info = ''
     condition = False

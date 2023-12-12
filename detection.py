@@ -1,7 +1,22 @@
 import os
 from detection_rules import check_file_size, check_pcap
 
-def detection_py_rules(rule, path_list):
+
+def set_MAX_FILES(max_files_list):
+    global MAX_FILE_SIZE_JSON
+    global MAX_FILE_SIZE_XML
+    global MAX_FILE_SIZE_TXT
+    global MAX_FILE_SIZE_EVTX
+    MAX_FILE_SIZE_JSON = max_files_list[0]
+    MAX_FILE_SIZE_XML = max_files_list[1]
+    MAX_FILE_SIZE_TXT = max_files_list[2]
+    MAX_FILE_SIZE_EVTX = max_files_list[3]
+
+
+
+
+
+def detection_py_rules(rule, path_list, ip_network,ip_network1, max_files_list):
     extensions = {"check_file_size": ['evtx', 'json', 'xml', 'txt'], "check_pcap": ['pcap']}
 
     try:
@@ -9,10 +24,12 @@ def detection_py_rules(rule, path_list):
         if rule == "check_file_size":
             files_to_check = get_files(path_list, extensions[rule])
 
-            action_alert, info = check_file_size(json=files_to_check['json'],
+            action_alert, info = check_file_size(max_files_list,
+                                                json=files_to_check['json'],
                                                  xml=files_to_check['xml'],
                                                  txt=files_to_check['txt'],
-                                                 evtx=files_to_check['evtx'])
+                                                 evtx=files_to_check['evtx']
+                                                 )
             if action_alert is not None:
                 print(action_alert) #TODO
                 print(info) #TODO
@@ -20,7 +37,7 @@ def detection_py_rules(rule, path_list):
         elif rule == "check_pcap":
             files_to_check = get_files(path_list, extensions[rule])
             
-            action_alert, info = check_pcap(pcap=files_to_check['pcap'])
+            action_alert, info = check_pcap(ip_network,ip_network1,pcap=files_to_check['pcap'])
             print("1")
             if action_alert is not None:
                 print(action_alert) #TODO
@@ -30,11 +47,12 @@ def detection_py_rules(rule, path_list):
             files_to_check_check_pcap = get_files(path_list, extensions["check_pcap"])
             files_to_check_check_file_size = get_files(path_list, extensions["check_file_size"])
 
-            action_alert, info = check_pcap(pcap=files_to_check_check_pcap['pcap'])
+            action_alert, info = check_pcap(ip_network,ip_network1, pcap=files_to_check_check_pcap['pcap'])
             if action_alert is not None:
                 print(action_alert)  # TODO
                 print(info)  # TODO
-            action_alert, info = check_file_size(json=files_to_check_check_file_size['json'],
+            action_alert, info = check_file_size(max_files_list,
+                                                 json=files_to_check_check_file_size['json'],
                                                  xml=files_to_check_check_file_size['xml'],
                                                  txt=files_to_check_check_file_size['txt'],
                                                  evtx=files_to_check_check_file_size['evtx'])
