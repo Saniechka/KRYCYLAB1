@@ -21,8 +21,6 @@ def check_pcap(**kwargs):
             i=0
 
             for packet in packets:
-                i=i+1
-                print(i)
                 # Sprawdzenie flag SYN i FIN
                 if packet.haslayer(IP) and packet.haslayer(TCP):
                     if packet[TCP].flags & 0x02 or packet[TCP].flags & 0x01:
