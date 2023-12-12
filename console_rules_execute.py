@@ -8,7 +8,7 @@ def cli():
 
 
 @cli.command()
-@cli.option('--rule', '-r', required=True,  help='Rule for a  you request. Please Choose beetween all, check_pcap,check_file_size')
+@click.option('--rule', '-r', required=True,  help='Rule for a  you request. Please Choose beetween all, check_pcap,check_file_size')
 @click.option('--path_list', '-p',required=True, nargs=-1, multiple=True, help='List of paths')
 @click.option('--ip_network', '-ip', required=True,help='First IP  Network  for blacklist')
 @click.option('--ip_network1', '-ip1',required=True, help='Second IP  Network  for blacklist')
