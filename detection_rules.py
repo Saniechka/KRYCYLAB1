@@ -49,7 +49,6 @@ def check_pcap(ip_network, ip_network1,**kwargs):
                     src_ip = ipaddress.IPv4Address(packet[IP].src)
                     if src_ip not in NETWORK_TO_CHECK:
                         condition = True
-                        print(f'UWAGASRC IP{src_ip}')
                         info += (f'Pakiet z nieautoryzowanym ZrOdLowym adresem IP:{packet}w  pliku {pcap_file}\n')
 
 
